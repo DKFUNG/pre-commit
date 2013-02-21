@@ -6,13 +6,14 @@ module PreCommit
     attr_accessor :staged_files, :error_message
 
     HASHROCKET_PATTERN = ':(?:\$|@|@@|[_A-Za-z])?\w*[=!?]?\s*=>\s*'
+    EXTENSIONS = %w(.rb .erb .rake)
 
     def self.call
       check = new
       check.staged_files = Utils.staged_files('*')
 
       check.staged_files = check.staged_files.split(" ").select do |file|
-        File.extname(file) == ".rb" || File.extname(file) == ".erb" || File.extname(file) == ".rake"
+        EXTENSIONS.include? File.extname(file)
       end.join(" ")
 
       result = check.run
