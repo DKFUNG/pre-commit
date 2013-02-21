@@ -10,6 +10,11 @@ module PreCommit
     def self.call
       check = new
       check.staged_files = Utils.staged_files('*')
+
+      check.staged_files = check.staged_files.split(" ").select do |file|
+        File.extname(file) == ".rb" || File.extname(file) == ".erb" || File.extname(file) == ".rake"
+      end
+
       result = check.run
 
       if !result
