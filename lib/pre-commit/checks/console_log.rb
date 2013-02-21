@@ -5,7 +5,7 @@ module PreCommit
 
     def self.call(quiet=false)
       check = new
-      check.staged_files = Utils.staged_files('public/javascripts')
+      check.staged_files = Utils.staged_files('public/javascripts', 'app/assets/javascripts/')
 
       result = check.run
       if !quiet && !result
@@ -35,7 +35,7 @@ module PreCommit
 
     def staged_js_files
       @staged_js_files ||= staged_files.split(" ").select do |file|
-        File.extname(file) == ".js"
+        File.extname(file) == ".js" || File.extname(file) == '.coffee'
       end.join(" ")
     end
 
