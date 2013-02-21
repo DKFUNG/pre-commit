@@ -13,7 +13,7 @@ module PreCommit
 
       check.staged_files = check.staged_files.split(" ").select do |file|
         File.extname(file) == ".rb" || File.extname(file) == ".erb" || File.extname(file) == ".rake"
-      end
+      end.join(" ")
 
       result = check.run
 
