@@ -3,6 +3,8 @@ module PreCommit
 
     attr_accessor :staged_files, :error_message
 
+    EXTENSIONS = %w(.js .coffee .erb)
+
     def self.call(quiet=false)
       check = new
       check.staged_files = Utils.staged_files('public/javascripts', 'app/assets/javascripts/')
@@ -35,7 +37,7 @@ module PreCommit
 
     def staged_js_files
       @staged_js_files ||= staged_files.split(" ").select do |file|
-        File.extname(file) == ".js" || File.extname(file) == '.coffee'
+        EXTENSIONS.include? File.extname(file)
       end.join(" ")
     end
 
